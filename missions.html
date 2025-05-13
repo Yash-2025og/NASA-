@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Missions - Detailed Information</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .mission-detail {
+            padding: 120px 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mission-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .mission-header img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            padding: 0 1rem;
+        }
+
+        .mission-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-info h2 {
+            color: #0b3d91;
+            margin: 2rem 0 1rem;
+        }
+
+        .mission-info h2:first-child {
+            margin-top: 0;
+        }
+
+        .mission-info ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .mission-info ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mission-info ul li:last-child {
+            border-bottom: none;
+        }
+
+        .mission-sidebar {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .mission-stats {
+            margin-bottom: 2rem;
+        }
+
+        .mission-stats h3 {
+            margin-bottom: 1rem;
+            color: #0b3d91;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #0b3d91;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #1a4ba1;
+        }
+
+        @media (max-width: 1024px) {
+            .mission-content {
+                grid-template-columns: 1fr;
+            }
+
+            .mission-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mission-header img {
+                height: 300px;
+            }
+        }
+
+        .mission-gallery {
+            margin-top: 3rem;
+        }
+
+        .mission-gallery h2 {
+            color: #0b3d91;
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .mission-gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .mission-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .mission-gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .mission-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox-caption {
+            color: white;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg" alt="NASA Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#missions">Missions</a></li>
+            <li><a href="index.html#gallery">Gallery</a></li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="mission-detail">
+        <a href="index.html#missions" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Missions
+        </a>
+
+        <div class="mission-header">
+            <img src="" alt="" id="mission-image">
+            <h1 id="mission-title"></h1>
+        </div>
+
+        <div class="mission-content">
+            <div class="mission-info">
+                <h2>Mission Overview</h2>
+                <p id="mission-description"></p>
+
+                <h2>Objectives</h2>
+                <ul id="mission-objectives"></ul>
+
+                <h2>Key Achievements</h2>
+                <ul id="mission-achievements"></ul>
+
+                <h2>Scientific Impact</h2>
+                <p id="mission-impact"></p>
+
+                <div class="mission-gallery">
+                    <h2>Mission Gallery</h2>
+                    <div class="mission-gallery-grid" id="mission-gallery"></div>
+                </div>
+            </div>
+
+            <div class="mission-sidebar">
+                <div class="mission-stats">
+                    <h3>Mission Statistics</h3>
+                    <div id="mission-stats"></div>
+                </div>
+
+                <div class="mission-stats">
+                    <h3>Timeline</h3>
+                    <div id="mission-timeline"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" id="lightbox-image">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        const missions = {
+            'artemis': {
+                title: 'Artemis Program',
+                image: 'https://images-assets.nasa.gov/image/ksc-20221116-ph-kls01_0001/ksc-20221116-ph-kls01_0001~orig.jpg',
+                gallery: [
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20221116-ph-kls01_0001/ksc-20221116-ph-kls01_0001~orig.jpg',
+                        caption: 'Artemis I Launch - The first step in returning humans to the Moon'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20230403-ph-kls01_0001/ksc-20230403-ph-kls01_0001~orig.jpg',
+                        caption: 'Artemis II Crew - The astronauts who will fly around the Moon'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20221208-ph-kls01_0001/ksc-20221208-ph-kls01_0001~orig.jpg',
+                        caption: 'Artemis III Landing Site - Where humans will return to the lunar surface'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20221115-ph-kls01_0001/ksc-20221115-ph-kls01_0001~orig.jpg',
+                        caption: 'Lunar Gateway - The space station that will orbit the Moon'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20221114-ph-kls01_0001/ksc-20221114-ph-kls01_0001~orig.jpg',
+                        caption: 'Space Launch System - The most powerful rocket ever built'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/ksc-20221113-ph-kls01_0001/ksc-20221113-ph-kls01_0001~orig.jpg',
+                        caption: 'Orion Spacecraft - The next generation of human spaceflight'
+                    }
+                ],
+                description: "The Artemis program is NASA's initiative to return humans to the Moon and establish a sustainable presence there by the end of the decade. This ambitious program will use innovative technologies to explore more of the lunar surface than ever before.",
+                objectives: [
+                    'Demonstrate new technologies, capabilities, and business approaches needed for future exploration',
+                    'Establish American leadership and a strategic presence on the Moon',
+                    'Expand our economic sphere to the Moon',
+                    'Extend human presence to the Moon to enable eventual missions to Mars'
+                ],
+                achievements: [
+                    'Successful launch of Artemis I in 2022',
+                    'Development of the Space Launch System (SLS)',
+                    'Creation of the Orion spacecraft',
+                    'Establishment of international partnerships'
+                ],
+                impact: 'The Artemis program represents a new era of space exploration, combining the best of NASA\'s experience with new technologies and international partnerships. It will serve as a stepping stone for future missions to Mars and beyond.',
+                stats: {
+                    'Launch Vehicle': 'Space Launch System (SLS)',
+                    'Crew Capacity': '4 astronauts',
+                    'Duration': '21 days (Artemis II)',
+                    'Destination': 'Lunar orbit and surface'
+                },
+                timeline: {
+                    '2022': 'Artemis I - Uncrewed test flight',
+                    '2024': 'Artemis II - First crewed flight',
+                    '2025': 'Artemis III - First crewed landing'
+                }
+            },
+            'perseverance': {
+                title: 'Mars Perseverance Rover',
+                image: 'https://images-assets.nasa.gov/image/PIA24424/PIA24424~orig.jpg',
+                gallery: [
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24424/PIA24424~orig.jpg',
+                        caption: 'Perseverance Landing - The dramatic touchdown on Mars'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24425/PIA24425~orig.jpg',
+                        caption: 'Perseverance Selfie - The rover\'s view of itself on Mars'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24426/PIA24426~orig.jpg',
+                        caption: 'Drilling Operations - Collecting samples from Martian rocks'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24427/PIA24427~orig.jpg',
+                        caption: 'Ingenuity Helicopter - First powered flight on another planet'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24428/PIA24428~orig.jpg',
+                        caption: 'Martian Rocks - Ancient geological formations'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/PIA24429/PIA24429~orig.jpg',
+                        caption: 'Jezero Crater - The landing site and ancient lake bed'
+                    }
+                ],
+                description: 'The Perseverance rover is part of NASA\'s Mars 2020 mission, designed to search for signs of ancient life and collect samples of rock and soil for possible return to Earth.',
+                objectives: [
+                    'Search for signs of ancient microbial life',
+                    'Collect and cache Martian rock and soil samples',
+                    'Characterize the planet\'s geology and climate',
+                    'Demonstrate technology for future Mars exploration'
+                ],
+                achievements: [
+                    'Successful landing in Jezero Crater',
+                    'First powered flight on another planet (Ingenuity helicopter)',
+                    'Collection of multiple rock samples',
+                    'Discovery of organic molecules'
+                ],
+                impact: 'Perseverance is helping scientists understand the geological history of Mars and whether the planet could have supported life in its past. The mission is also testing technologies that could be used in future human missions to Mars.',
+                stats: {
+                    'Launch Date': 'July 30, 2020',
+                    'Landing Date': 'February 18, 2021',
+                    'Weight': '1,025 kg',
+                    'Power Source': 'Multi-Mission Radioisotope Thermoelectric Generator'
+                },
+                timeline: {
+                    '2020': 'Launch from Earth',
+                    '2021': 'Landing on Mars',
+                    '2022': 'Sample collection begins',
+                    '2023': 'Continued exploration and sample caching'
+                }
+            },
+            'james-webb': {
+                title: 'James Webb Space Telescope',
+                image: 'https://images-assets.nasa.gov/image/weic2208a/weic2208a~orig.jpg',
+                gallery: [
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2208a/weic2208a~orig.jpg',
+                        caption: 'Webb\'s First Deep Field - The deepest infrared view of the universe'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2209a/weic2209a~orig.jpg',
+                        caption: 'Cartwheel Galaxy - A rare ring galaxy captured in stunning detail'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2212a/weic2212a~orig.jpg',
+                        caption: 'Pillars of Creation - Iconic star-forming region in new light'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2213a/weic2213a~orig.jpg',
+                        caption: 'Neptune\'s Rings - The ice giant in infrared'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2214a/weic2214a~orig.jpg',
+                        caption: 'Tarantula Nebula - A stellar nursery in the Large Magellanic Cloud'
+                    },
+                    {
+                        url: 'https://images-assets.nasa.gov/image/weic2215a/weic2215a~orig.jpg',
+                        caption: 'Webb Deployment - The telescope\'s journey to space'
+                    }
+                ],
+                description: 'The James Webb Space Telescope is the largest and most powerful space telescope ever built. It will study every phase of cosmic history, from the first luminous glows after the Big Bang to the formation of galaxies, stars, and planets.',
+                objectives: [
+                    'Study the first light after the Big Bang',
+                    'Observe the formation of galaxies',
+                    'Investigate the birth of stars and planets',
+                    'Search for signs of life in exoplanet atmospheres'
+                ],
+                achievements: [
+                    'Successful launch and deployment',
+                    'First deep field image release',
+                    'Discovery of early galaxies',
+                    'Detailed observations of exoplanets'
+                ],
+                impact: 'Webb is revolutionizing our understanding of the universe, providing unprecedented views of distant galaxies, star-forming regions, and exoplanets. Its discoveries are reshaping our knowledge of cosmic evolution.',
+                stats: {
+                    'Launch Date': 'December 25, 2021',
+                    'Primary Mirror': '6.5 meters diameter',
+                    'Operating Temperature': '-233°C',
+                    'Wavelength Range': '0.6 to 28.5 microns'
+                },
+                timeline: {
+                    '2021': 'Launch and deployment',
+                    '2022': 'First images released',
+                    '2023': 'First year of scientific observations',
+                    '2024': 'Ongoing discoveries and research'
+                }
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const missionId = urlParams.get('mission');
+
+        function loadMissionData() {
+            const mission = missions[missionId];
+            if (!mission) {
+                window.location.href = 'index.html#missions';
+                return;
+            }
+
+            document.getElementById('mission-image').src = mission.image;
+            document.getElementById('mission-image').alt = mission.title;
+            document.getElementById('mission-title').textContent = mission.title;
+            document.getElementById('mission-description').textContent = mission.description;
+
+            const galleryGrid = document.getElementById('mission-gallery');
+            mission.gallery.forEach(image => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'mission-gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = image.url;
+                img.alt = image.caption;
+                
+                galleryItem.appendChild(img);
+                galleryGrid.appendChild(galleryItem);
+
+                galleryItem.addEventListener('click', () => {
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightbox-image');
+                    const lightboxCaption = document.getElementById('lightbox-caption');
+                    
+                    lightboxImg.src = image.url;
+                    lightboxImg.alt = image.caption;
+                    lightboxCaption.textContent = image.caption;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            const objectivesList = document.getElementById('mission-objectives');
+            mission.objectives.forEach(objective => {
+                const li = document.createElement('li');
+                li.textContent = objective;
+                objectivesList.appendChild(li);
+            });
+
+            const achievementsList = document.getElementById('mission-achievements');
+            mission.achievements.forEach(achievement => {
+                const li = document.createElement('li');
+                li.textContent = achievement;
+                achievementsList.appendChild(li);
+            });
+
+            document.getElementById('mission-impact').textContent = mission.impact;
+
+            const statsContainer = document.getElementById('mission-stats');
+            for (const [key, value] of Object.entries(mission.stats)) {
+                const div = document.createElement('div');
+                div.className = 'stat-item';
+                div.innerHTML = `<span>${key}:</span> <span>${value}</span>`;
+                statsContainer.appendChild(div);
+            }
+
+            const timelineContainer = document.getElementById('mission-timeline');
+            for (const [year, event] of Object.entries(mission.timeline)) {
+                const div = document.createElement('div');
+                div.className = 'stat-item';
+                div.innerHTML = `<span>${year}:</span> <span>${event}</span>`;
+                timelineContainer.appendChild(div);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadMissionData);
+
+        document.querySelector('.lightbox-close').addEventListener('click', () => {
+            document.getElementById('lightbox').classList.remove('active');
+        });
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightbox')) {
+                document.getElementById('lightbox').classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('lightbox').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
