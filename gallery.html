@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Image Gallery</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gallery-hero {
+            height: 40vh;
+            background: linear-gradient(rgba(11, 11, 43, 0.7), rgba(11, 11, 43, 0.7)),
+                        url('https://images-assets.nasa.gov/image/iss063e039341/iss063e039341~orig.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .gallery-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-filters {
+            background-color: rgba(11, 11, 43, 0.95);
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 76px;
+            z-index: 100;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 0.3rem;
+        }
+
+        .filter-button:hover, .filter-button.active {
+            background-color: #0b3d91;
+        }
+
+        .gallery-container {
+            padding: 2rem;
+            background: linear-gradient(135deg, #0b0b2b 0%, #1a1a4b 50%, #0b3d91 100%);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        .gallery-tag {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            background-color: rgba(11, 61, 145, 0.8);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-image {
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg" alt="NASA Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#missions">Missions</a></li>
+            <li><a href="gallery.html" class="active">Gallery</a></li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="gallery-hero">
+        <div class="gallery-hero-content">
+            <h1>NASA Image Gallery</h1>
+            <p>Explore spectacular photographs captured by NASA's missions and telescopes</p>
+        </div>
+    </div>
+
+    <div class="gallery-filters">
+        <button class="filter-button active" data-filter="all">All</button>
+        <button class="filter-button" data-filter="planets">Planets</button>
+        <button class="filter-button" data-filter="stars">Stars & Galaxies</button>
+        <button class="filter-button" data-filter="astronauts">Astronauts</button>
+        <button class="filter-button" data-filter="earth">Earth</button>
+    </div>
+
+    <div class="gallery-container">
+        <div class="gallery-grid">
+            <!-- Planets -->
+            <div class="gallery-item" data-category="planets">
+                <span class="gallery-tag">Saturn</span>
+                <img src="https://images-assets.nasa.gov/image/PIA21046/PIA21046~orig.jpg" alt="Saturn">
+                <div class="gallery-caption">
+                    <h3>Saturn's Northern Hemisphere</h3>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="planets">
+                <span class="gallery-tag">Jupiter</span>
+                <img src="https://images-assets.nasa.gov/image/PIA21974/PIA21974~orig.jpg" alt="Jupiter">
+                <div class="gallery-caption">
+                    <h3>Jupiter's Clouds</h3>
+                </div>
+            </div>
+
+            <!-- Stars & Galaxies -->
+            <div class="gallery-item" data-category="stars">
+                <span class="gallery-tag">Nebula</span>
+                <img src="https://images-assets.nasa.gov/image/hubble-30th-cosmic-reef/hubble-30th-cosmic-reef~orig.jpg" alt="Cosmic Reef">
+                <div class="gallery-caption">
+                    <h3>Cosmic Reef</h3>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="stars">
+                <span class="gallery-tag">Galaxy</span>
+                <img src="https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000383/GSFC_20171208_Archive_e000383~orig.jpg" alt="Andromeda Galaxy">
+                <div class="gallery-caption">
+                    <h3>Andromeda Galaxy</h3>
+                </div>
+            </div>
+
+            <!-- Astronauts -->
+            <div class="gallery-item" data-category="astronauts">
+                <span class="gallery-tag">Spacewalk</span>
+                <img src="https://images-assets.nasa.gov/image/iss064e027890/iss064e027890~orig.jpg" alt="Spacewalk">
+                <div class="gallery-caption">
+                    <h3>Astronaut Spacewalk</h3>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="astronauts">
+                <span class="gallery-tag">Apollo</span>
+                <img src="https://images-assets.nasa.gov/image/as11-40-5903/as11-40-5903~orig.jpg" alt="Apollo 11">
+                <div class="gallery-caption">
+                    <h3>Apollo 11 Moonwalk</h3>
+                </div>
+            </div>
+
+            <!-- Earth -->
+            <div class="gallery-item" data-category="earth">
+                <span class="gallery-tag">Blue Marble</span>
+                <img src="https://images-assets.nasa.gov/image/PIA18033/PIA18033~orig.jpg" alt="Earth Blue Marble">
+                <div class="gallery-caption">
+                    <h3>Blue Marble</h3>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="earth">
+                <span class="gallery-tag">Aurora</span>
+                <img src="https://images-assets.nasa.gov/image/iss042e017422/iss042e017422~orig.jpg" alt="Aurora">
+                <div class="gallery-caption">
+                    <h3>Aurora from Space</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="" class="lightbox-image">
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://twitter.com/NASA" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/NASA" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/nasa" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 NASA Portfolio</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gallery filtering
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category').includes(filter)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.querySelector('.lightbox-image');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const img = item.querySelector('img');
+                    lightboxImage.src = img.src;
+                    lightboxImage.alt = img.alt;
+                    lightbox.classList.add('active');
+                });
+            });
+            
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+            
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
